@@ -1,0 +1,739 @@
+{
+  "name": "NR1 Usage v3",
+  "description": "",
+  "permissions": "PUBLIC_READ_WRITE",
+  "pages": [
+    {
+      "name": "NR1 Usage v3",
+      "description": null,
+      "widgets": [
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 1,
+            "width": 12,
+            "height": 2
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# Understanding your usage data in New Relic One\n\nAs customers move to a drastically simplified pricing model based on provisioned users, GB ingest, and AI transactions and events, understanding and managing usage data in New Relic One is a key component for tracking spend.\n\nThe queries below represent the most common scenarios for customers at launch."
+          }
+        },
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 3,
+            "width": 2,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# COST"
+          }
+        },
+        {
+          "title": "Estimated cost by product this quarter",
+          "layout": {
+            "column": 3,
+            "row": 3,
+            "width": 5,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption select latest(estimatedCost) as 'Estimated cost by product' since this quarter facet productLine"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Estimated Monthly Cost",
+          "layout": {
+            "column": 8,
+            "row": 3,
+            "width": 5,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption select max(estimatedCost) as 'Estimated cost based on GB ingest' where productLine = 'DataPlatform' since 3 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 6,
+            "width": 2,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# Data Ingestion"
+          }
+        },
+        {
+          "title": "GBs Ingested this month by Account name",
+          "layout": {
+            "column": 3,
+            "row": 6,
+            "width": 5,
+            "height": 3
+          },
+          "linkedEntityGuids": [
+            "MTI2MTU5NXxWSVp8REFTSEJPQVJEfDE3NDU5MTM"
+          ],
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) as 'Total GBs Ingested this Month'where productLine = 'DataPlatform' SINCE this month facet consumingAccountName"
+              }
+            ]
+          }
+        },
+        {
+          "title": "How many GBs have I accrued by month",
+          "layout": {
+            "column": 8,
+            "row": 6,
+            "width": 5,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) as 'Total GBs Ingested Since Start Date' facet monthOf(timestamp) where productLine = 'DataPlatform' SINCE '2020-07-31'"
+              }
+            ]
+          }
+        },
+        {
+          "title": "How many GBs have I accrued this month?",
+          "layout": {
+            "column": 1,
+            "row": 9,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bullet"
+          },
+          "rawConfiguration": {
+            "limit": 200000,
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) as 'Total GBs Ingested last Month' where productLine = 'DataPlatform' since this month"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Daily Trends for GB Ingest",
+          "layout": {
+            "column": 5,
+            "row": 9,
+            "width": 8,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.area"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "legend": {
+              "enabled": true
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' since 12 months ago facet usageMetric timeseries 1 day"
+              }
+            ]
+          }
+        },
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 12,
+            "width": 2,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# Users"
+          }
+        },
+        {
+          "title": "How many full users were provisioned for my account the last 30 days?",
+          "layout": {
+            "column": 3,
+            "row": 12,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bullet"
+          },
+          "rawConfiguration": {
+            "dataFormatters": [],
+            "limit": 600,
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption SELECT latest(usersBillable) where metric= 'FullUsers' since 30 days ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "How many of my full users are using New Relic One over last 12 months?",
+          "layout": {
+            "column": 7,
+            "row": 12,
+            "width": 6,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.line"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "legend": {
+              "enabled": true
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption SELECT latest(usersBillable) where metric= 'FullUsers' since 12 months ago TIMESERIES 1 day "
+              }
+            ],
+            "platformOptions": {
+              "ignoreTimeRange": false
+            },
+            "yAxisLeft": {
+              "zero": false
+            }
+          }
+        },
+        {
+          "title": "Full provisioned users compared by month",
+          "layout": {
+            "column": 1,
+            "row": 15,
+            "width": 12,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption SELECT latest(usersBillable) where metric= 'FullUsers' since 24 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 18,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# Applied Inteligence"
+          }
+        },
+        {
+          "title": "Proactive Detection Usage",
+          "layout": {
+            "column": 5,
+            "row": 18,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.area"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrMTDConsumption select latest(appTransactionsAnalyzed) since this month TIMESERIES auto"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Incident Intelligence Usage",
+          "layout": {
+            "column": 9,
+            "row": 18,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.area"
+          },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "FROM NrMTDConsumption SELECT latest(IncidentEvents) since this month TIMESERIES AUTO "
+              }
+            ]
+          }
+        },
+        {
+          "title": "",
+          "layout": {
+            "column": 1,
+            "row": 21,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.markdown"
+          },
+          "rawConfiguration": {
+            "text": "# Understanding your metrics"
+          }
+        },
+        {
+          "title": "Event-to-Metrics Rules",
+          "layout": {
+            "column": 5,
+            "row": 21,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.table"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "\nSELECT * from NrAuditEvent where actionIdentifier LIKE 'e2m%' SINCE 1 week ago limit max\n "
+              }
+            ]
+          }
+        },
+        {
+          "title": "Dimensional Metrics Source",
+          "layout": {
+            "column": 9,
+            "row": 21,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.pie"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "From Metric select bytecountestimate()/10e8 as 'GBytes' facet newrelic.source since 2 days ago RAW "
+              }
+            ]
+          }
+        },
+        {
+          "title": "Event-to-Metrics by App Name",
+          "layout": {
+            "column": 1,
+            "row": 24,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "From Metric select bytecountestimate() where eventType()= 'Metric' and newrelic.source = 'eventsToMetrics' facet appName limit max "
+              }
+            ]
+          }
+        },
+        {
+          "title": "Agents Creating Metrics by Volume",
+          "layout": {
+            "column": 5,
+            "row": 24,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "FROM Metric select bytecountestimate()/10e8 as 'GByte' facet agent.type where newrelic.source = 'agent' "
+              }
+            ]
+          }
+        },
+        {
+          "title": "Prometheus Integration by Server",
+          "layout": {
+            "column": 9,
+            "row": 24,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "FROM Metric select bytecountestimate()/10e8 as 'Gigabytes Ingested' facet prometheus_server since 1 day ago"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Usage by Instrumentation",
+          "layout": {
+            "column": 1,
+            "row": 27,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "FROM Metric select bytecountestimate()/10e8 as 'Gigabytes' facet instrumentation.name, instrumentation.source,instrumentation.provider limit 20 "
+              }
+            ]
+          }
+        },
+        {
+          "title": "Reporting App by Connections",
+          "layout": {
+            "column": 5,
+            "row": 27,
+            "width": 8,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "FROM ApplicationAgentContext select uniqueCount(appName) as 'app Count', uniqueCount(realAgentId) as 'instance count' since last week limit max facet appName, appId"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Growth Estimates",
+      "description": null,
+      "widgets": [
+        {
+          "title": "Browser Consumption",
+          "layout": {
+            "column": 1,
+            "row": 1,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'BrowserEventsBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "APM Consumption",
+          "layout": {
+            "column": 5,
+            "row": 1,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'ApmEventsBytes' or usageMetric = 'TracingBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Infra Consumption",
+          "layout": {
+            "column": 9,
+            "row": 1,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'InfraHostBytes' or usageMetric = 'InfraIntegrationBytes' or usageMetric = 'InfraProcessBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Mobile Consumption",
+          "layout": {
+            "column": 1,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'MobileEventsBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Metrics and Custom Events Consumption",
+          "layout": {
+            "column": 5,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'MetricsBytes' or usageMetric = 'CustomEventsBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Logs Consumption",
+          "layout": {
+            "column": 9,
+            "row": 4,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'LoggingBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Logs Consumption",
+          "layout": {
+            "column": 1,
+            "row": 7,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'LoggingBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Pixie Consumption",
+          "layout": {
+            "column": 5,
+            "row": 7,
+            "width": 4,
+            "height": 3
+          },
+          "linkedEntityGuids": null,
+          "visualization": {
+            "id": "viz.bar"
+          },
+          "rawConfiguration": {
+            "facet": {
+              "showOtherSeries": false
+            },
+            "nrqlQueries": [
+              {
+                "accountId": 3103539,
+                "query": "from NrConsumption select sum(GigabytesIngested) where productLine = 'DataPlatform' and usageMetric = 'PixieBytes' since 12 months ago facet monthOf(timestamp)"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variables": []
+}
